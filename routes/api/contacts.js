@@ -18,4 +18,4 @@ router.patch('/:contactId/favorite', putContactValidation, controllerWrraper(upd
 
 router.delete('/:contactId', controllerWrraper(deleteContactByID));
 
-module.exports = router
+module.exports = router;
