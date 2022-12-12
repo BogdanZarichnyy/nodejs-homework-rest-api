@@ -2,7 +2,8 @@ const { isValidObjectId } = require('mongoose');
 const Contact = require('../../models/contact');
 const { createError } = require('../../helpers/createError');
 
-const updateStatusContact  = async (req, res) => {
+const updateStatusContact = async (req, res) => {
+    const { _id } = req.user;
     const { contactId: id } = req.params;
 
     if (!isValidObjectId(id)) {
@@ -13,7 +14,7 @@ const updateStatusContact  = async (req, res) => {
         throw createError({ status: 400, message: 'Missing field: { "favorite" }' });
     }
 
-    const data = await Contact.findByIdAndUpdate(id, req.body, { new: true });
+    const data = await Contact.findOneAndUpdate({ _id: id, owner: _id }, req.body, { new: true });
 
     if (!data) {
         throw createError({ status: 404, message: 'Not Found' });

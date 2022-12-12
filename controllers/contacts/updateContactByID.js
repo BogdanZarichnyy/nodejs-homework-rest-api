@@ -3,6 +3,7 @@ const Contact = require('../../models/contact');
 const { createError } = require('../../helpers/createError');
 
 const updateContactById = async (req, res) => {
+    const { _id } = req.user;
     const { contactId: id } = req.params;
     const { name, email, phone } = req.body;
 
@@ -14,7 +15,7 @@ const updateContactById = async (req, res) => {
         throw createError({ status: 400, message: `Missing fields: { ${name ? '' : '"name" '}${email ? '' : '"email" '}${phone ? '' : '"phone" '}}` });
     }
 
-    const data = await Contact.findByIdAndUpdate(id, req.body, { new: true });
+    const data = await Contact.findOneAndUpdate({ _id: id, owner: _id }, req.body, { new: true });
 
     if (!data) {
         throw createError({ status: 404, message: 'Not Found' });

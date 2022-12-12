@@ -1,10 +1,13 @@
 const express = require('express');
 
-const { getAllContacts, getContactByID, addContact, updateContactByID, updateStatusContact, deleteContactByID } = require('../../controllers/contacts');
-const { addContactValidation, putContactValidation } = require('../../middlewares/validationMiddleware');
+const { userAuthenticate } = require('../../middlewares/authenticateMiddleware');
+const { addContactValidation, putContactValidation } = require('../../middlewares/contactValidationMiddleware');
 const controllerWrraper = require('../../helpers/controllerWrraper');
+const { getAllContacts, getContactByID, addContact, updateContactByID, updateStatusContact, deleteContactByID } = require('../../controllers/contacts');
 
 const router = express.Router();
+
+router.use(userAuthenticate);
 
 router.get('/', controllerWrraper(getAllContacts));
 
