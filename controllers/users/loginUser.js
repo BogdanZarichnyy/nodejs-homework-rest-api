@@ -7,9 +7,13 @@ const loginUser = async (req, res) => {
     const { email, password } = req.body;
 
     const user = await User.findOne({ email });
-
+    
     if (!user) {
         throw createError({ status: 401, message: 'Email or password is wrong' });
+    }
+
+    if (!user.verify) {
+        throw createError({ status: 400, message: 'User is not already verified' });
     }
 
     const passwordCompare = await bcrypt.compare(password, user.password);
