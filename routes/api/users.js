@@ -4,11 +4,15 @@ const { registerUserSchemaValidation, loginUserSchemaValidation, updateUserSubsc
 const { userAuthenticate } = require('../../middlewares/authenticateMiddleware');
 const controllerWrraper = require('../../helpers/controllerWrraper');
 const upload = require('../../middlewares/uploadUserAvatarMiddlware');
-const { registrationUser, loginUser, getCurrentUser, updateUserSubscription, updateUserAvatar, logoutUser } = require('../../controllers/users');
+const { registrationUser, verificationUser, reVerificationUser, loginUser, getCurrentUser, updateUserSubscription, updateUserAvatar, logoutUser } = require('../../controllers/users');
 
 const router = express.Router();
 
 router.post('/register', registerUserSchemaValidation, controllerWrraper(registrationUser));
+
+router.get('/verify/:verificationToken', controllerWrraper(verificationUser));
+
+router.post('/verify', controllerWrraper(reVerificationUser));
 
 router.post('/login', loginUserSchemaValidation, controllerWrraper(loginUser));
 
